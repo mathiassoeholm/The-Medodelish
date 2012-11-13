@@ -140,6 +140,5 @@ TestResults
 # Misc
 *.user
 DebugScreenshots
-*.unity
 *.StyleCop
 StyleCop.Cache
