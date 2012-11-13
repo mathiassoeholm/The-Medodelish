@@ -76,6 +76,10 @@ public class GameManager : UnityManager<GameManager>
             Destroy(switches[i].gameObject);
         }
 
+        // Make sure player 1 starts
+        this.currentPlayer = 1;
+        this.currentPlayerRenderer.material.mainTexture = GUIManager.Instance.PlayerOneText;
+
         // Clear collections
         switches = new List<Renderer>();
         monsterCombination = new List<Monster>();
