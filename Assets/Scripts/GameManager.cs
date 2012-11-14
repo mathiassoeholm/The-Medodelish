@@ -56,6 +56,7 @@ public class GameManager : UnityManager<GameManager>
         }
     }
 
+
     void EndGame(int playerFailed)
     {
         // Set player won text

@@ -6,6 +6,7 @@ using System.Collections;
 public class Monster : BaseMonoBehaviour
 {
     private const float MoveSpeed = 15;
+    private const float BeatPeek = 0.3f;
     
     public static List<Monster> Monsters { get; private set; }
 
@@ -16,6 +17,8 @@ public class Monster : BaseMonoBehaviour
     private float startYPos;
     private Vector3 target;
 
+    private bool isIdle;
+
     // Methods
     void Start()
     {
@@ -23,6 +26,9 @@ public class Monster : BaseMonoBehaviour
 
         target = transform.position;
         startYPos = transform.position.y;
+        isIdle = true;
+
+        EventManager.Instance.OnMusicBeat += this.BeatAction;
 
         // Add to static monster list
         Monsters.Add(this);
@@ -33,16 +39,26 @@ public class Monster : BaseMonoBehaviour
         transform.position = Vector3.Lerp(transform.position, target, MoveSpeed * Time.deltaTime);
     }
 
+    private void BeatAction(bool beatInvert)
+    {
+        if(isIdle)
+        {
+            target.y = beatInvert ? startYPos : startYPos + BeatPeek;
+        }
+    }
+
     public void StartSound()
     {
         audio.pitch = this.AudioPitch;
         audio.Play();
+        isIdle = false;
     }
 
     public void StopSound()
     {
         audio.Stop();
         AudioManager.Instance.PlaySound(this.EndSound, 1, this.AudioPitch);
+        isIdle = true;
     }
 
     public void GoDown()

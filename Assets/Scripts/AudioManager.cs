@@ -21,7 +21,9 @@ public class AudioManager : UnityManager<AudioManager>
         FadingOut,
         Muted
     }
-    
+
+    public float MusicBpm;
+
     // The music volume when fully faded in, maximum is 1
     public float musicFullVolume = 1;
 
@@ -38,6 +40,9 @@ public class AudioManager : UnityManager<AudioManager>
     private float collectionToPlayVolume;
     private float collectionToPlayPitch;
 
+    private float nextBeat;
+    private bool beatInverter;
+
     // Use this for initialization
     void Start()
     {
@@ -49,6 +54,14 @@ public class AudioManager : UnityManager<AudioManager>
     void Update()
     {
         HandleMusicFade();
+
+        if (Time.time > nextBeat)
+        {
+            beatInverter = !beatInverter;
+            EventManager.Instance.OnMusicBeat(beatInverter);
+
+            nextBeat = Time.time + 1 / (MusicBpm / 60);
+        }
     }
 
     public void PlayCipFromCollection(AudioCollection collection, float volume = 1, float pitch = 1)

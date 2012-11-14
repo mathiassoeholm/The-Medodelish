@@ -18,25 +18,25 @@ public class InputManager : UnityManager<InputManager>
 
         // Cast a mouse input check ray
 #if UNITY_IPHONE
-        if (Input.touchCount > 0 && Input.GetTouch(Input.touchCount - 1).phase == TouchPhase.Began && Physics.Raycast(Camera.mainCamera.ScreenPointToRay(Input.GetTouch(Input.touchCount - 1).position), out hitInfo, 10))
+        if (Input.touchCount > 0 && Physics.Raycast(Camera.mainCamera.ScreenPointToRay(Input.GetTouch(Input.touchCount - 1).position), out hitInfo, 10))
 
 #else
         if (Input.GetMouseButtonDown(0) && Physics.Raycast(Camera.mainCamera.ScreenPointToRay(Input.mousePosition), out hitInfo, 10))
 #endif
         {
             // Check if we hit a monster
-            if (hitInfo.collider.GetComponent<Monster>() != null)
+            if (hitInfo.collider.GetComponent<Monster>() != null && this.lastMonsterTapped != hitInfo.collider.GetComponent<Monster>())
             {
+                // Stop sound if there is a previous monster
                 if (this.lastMonsterTapped != null)
                 {
                     // Stop monster sound
                     this.lastMonsterTapped.StopSound();
 
                     this.lastMonsterTapped.GoDown();
-
-                    this.lastMonsterTapped = null;
                 }
-                
+
+                // Set new monster hit
                 this.lastMonsterTapped = hitInfo.collider.GetComponent<Monster>();
 
                 // Invoke tapped on monster event
@@ -47,6 +47,7 @@ public class InputManager : UnityManager<InputManager>
 
                 GameManager.Instance.AddMonster(this.lastMonsterTapped);
                 this.lastMonsterTapped.GoUp();
+                
             }
         }
 
