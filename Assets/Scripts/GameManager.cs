@@ -27,6 +27,8 @@ public class GameManager : UnityManager<GameManager>
     private Renderer wonRenderer;
     private Renderer currentPlayerRenderer;
 
+    private float nextPossibleStatusParentScale;
+
     void Awake()
     {
         this.nextSwitchPositon = this.SwitchStartPos;
@@ -67,9 +69,20 @@ public class GameManager : UnityManager<GameManager>
         wonRenderer.enabled = true;
 
         // Bounce effect on status text
-        iTween.PunchScale(
+        if (Time.time > nextPossibleStatusParentScale)
+        {
+            iTween.PunchScale(
                 GameObject.Find("StatusText"),
-                iTween.Hash("amount", GameObject.Find("StatusText").transform.localScale * 0.2f, "easeType", "easeOutBounce", "time", 1.2f));
+                iTween.Hash(
+                    "amount",
+                    GameObject.Find("StatusText").transform.localScale * 0.2f,
+                    "easeType",
+                    "easeOutBounce",
+                    "time",
+                    1.2f));
+
+            nextPossibleStatusParentScale = Time.time + 1.3f;
+        }
 
         // Remove all switches
         for (int i = switches.Count - 1; i >= 0; i--)

@@ -21,7 +21,7 @@ public class InputManager : UnityManager<InputManager>
         if (Input.touchCount > 0 && Physics.Raycast(Camera.mainCamera.ScreenPointToRay(Input.GetTouch(Input.touchCount - 1).position), out hitInfo, 10))
 
 #else
-        if (Input.GetMouseButtonDown(0) && Physics.Raycast(Camera.mainCamera.ScreenPointToRay(Input.mousePosition), out hitInfo, 10))
+        if (Input.GetMouseButton(0) && Physics.Raycast(Camera.mainCamera.ScreenPointToRay(Input.mousePosition), out hitInfo, 10))
 #endif
         {
             // Check if we hit a monster
