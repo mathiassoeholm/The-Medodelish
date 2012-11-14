@@ -76,9 +76,13 @@ public class GameManager : UnityManager<GameManager>
             Destroy(switches[i].gameObject);
         }
 
+        // Write out player who lost
+        this.currentPlayerRenderer.material.mainTexture = currentPlayer == 1
+                                                              ? GUIManager.Instance.PlayerTwoText
+                                                              : GUIManager.Instance.PlayerOneText;
+
         // Make sure player 1 starts
         this.currentPlayer = 1;
-        this.currentPlayerRenderer.material.mainTexture = GUIManager.Instance.PlayerOneText;
 
         // Clear collections
         switches = new List<Renderer>();
@@ -109,8 +113,6 @@ public class GameManager : UnityManager<GameManager>
         this.switches[switchIndex].material.mainTexture = this.switchActiveTex;
         iTween.PunchScale(this.switches[switchIndex].gameObject, iTween.Hash("amount", transform.localScale * 0.16f, "easeType", "easeOutBounce", "time", 1.5f));
     }
-
-
 
     public void AddMonster(Monster monster)
     {
